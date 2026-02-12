@@ -252,11 +252,13 @@ uint16_t EthernetUDP::remotePort() {
 }
 
 bool EthernetUDP::timestamp(timespec &timestamp) const {
-  // NOTE: This is not "concurrent safe"
+  __disable_irq()
   if (packet_.hasTimestamp) {
     timestamp = packet_.timestamp;
+    __enable_irq()
     return true;
   }
+  __disable_irq()
   return false;
 }
 
