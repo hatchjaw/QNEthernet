@@ -85,6 +85,8 @@ class EthernetUDP : public UDP {
   // a buffer.
   int read(unsigned char *buffer, size_t len) final;
 
+  int readWithTimestamp(unsigned char *buffer, size_t len, timespec *ts);
+
   // A NULL buffer allows the caller to skip bytes without having to read into
   // a buffer.
   int read(char *buffer, size_t len) final;
