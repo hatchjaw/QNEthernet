@@ -425,6 +425,11 @@ bool driver_ieee1588_set_channel_compare_value(int channel, uint32_t value);
 ATTRIBUTE_NODISCARD
 bool driver_ieee1588_get_and_clear_channel_status(int channel);
 
+// Enables or disables timer interrupt generation for a channel. This will
+// return false for an unknown channel.
+ATTRIBUTE_NODISCARD
+bool driver_ieee1588_set_channel_interrupt_enable(int channel, bool enable);
+
 #ifdef __cplusplus
 }  // extern "C"
 #endif  // __cplusplus

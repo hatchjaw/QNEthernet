@@ -1296,6 +1296,9 @@ void driver_notify_manual_link_state(const bool flag) {
 #define ENET_TCSR_TPWC(n)    ((uint32_t)(((n) & 0x1f) << 11))
 #define ENET_TCSR_TF         ((uint32_t)(1U << 7))
 
+#define ENET_TCSR_TIE_MASK   ((uint32_t)(1U << 6))
+#define ENET_TCSR_TIE(n)     ((uint32_t)(((n) & 0x01) << 6))
+
 #define TIMER_CHANNEL_COUNT 4
 
 void driver_ieee1588_init(void) {
@@ -1517,6 +1520,20 @@ bool driver_ieee1588_get_and_clear_channel_status(const int channel) {
   } else {
     return false;
   }
+}
+
+bool driver_ieee1588_set_channel_interrupt_enable(int channel, bool enable)
+{
+  if (channel < 0 || channel > 3) {
+    return false;
+  }
+
+  volatile uint32_t *tcsr = tcsrReg(channel);
+  if (tcsr == NULL) {
+    return false;
+  }
+  CLRSET(*tcsr,ENET_TCSR_TIE_MASK,ENET_TCSR_TIE(enable));
+  return true;
 }
 
 #endif  // QNETHERNET_INTERNAL_DRIVER_TEENSY41

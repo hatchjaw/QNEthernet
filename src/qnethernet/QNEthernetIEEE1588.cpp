@@ -71,6 +71,11 @@ bool EthernetIEEE1588Class::getAndClearChannelStatus(int channel) const {
   return driver_ieee1588_get_and_clear_channel_status(channel);
 }
 
+bool EthernetIEEE1588Class::setChannelInterruptEnable(int channel, bool enable) const
+{
+  return driver_ieee1588_set_channel_interrupt_enable(channel, enable);
+}
+
 EthernetIEEE1588Class::operator bool() const {
   return driver_ieee1588_is_enabled();
 }

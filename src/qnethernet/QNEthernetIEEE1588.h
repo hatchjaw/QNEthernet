@@ -99,6 +99,10 @@ class EthernetIEEE1588Class final {
   // return false for an unknown channel.
   bool getAndClearChannelStatus(int channel) const;
 
+  // Enables or disables timer interrupt generation for a channel. This will
+  // return false for an unknown channel.
+  bool setChannelInterruptEnable(int channel, bool enable) const;
+
   // Tests if the IEEE 1588 timer has been started.
   operator bool() const;
 
