@@ -358,6 +358,31 @@ int EthernetUDP::read(char* const buffer, const size_t len) {
   return read(reinterpret_cast<uint8_t*>(buffer), len);
 }
 
+int EthernetUDP::readWithTimestamp(unsigned char *buffer, size_t len, timespec *ts)
+{
+  if (!isAvailable()) return 0;
+
+  __disable_irq();
+
+  // Capture timestamp if available
+  bool hasTS = false;
+  if (ts != nullptr && packet_.timestamp.has_value) {
+    *ts = packet_.timestamp.value;
+    hasTS = true;
+  }
+
+  // Capture data
+  len = std::min(len, packet_.data.size() - packetPos_);
+  if (buffer != nullptr) {
+    std::copy_n(&packet_.data.data()[packetPos_], len, buffer);
+  }
+  packetPos_ += len;
+
+  __enable_irq();
+
+  return hasTS ? len : -1;  // Negative if no timestamp
+}
+
 int EthernetUDP::peek() {
   if (!isAvailable()) {
     return -1;
