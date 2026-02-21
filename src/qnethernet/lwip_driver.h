@@ -358,6 +358,11 @@ bool driver_ieee1588_read_timer(struct timespec* t);
 ATTRIBUTE_NODISCARD
 bool driver_ieee1588_write_timer(const struct timespec* t);
 
+// Adds an offset to the current timer value. Uses the read and write
+// functions under the hood. This returns whether successful.
+ATTRIBUTE_NODISCARD
+bool driver_ieee1588_offset_timer(int64_t ns);
+
 // Tells the driver to timestamp the next transmitted frame.
 void driver_ieee1588_timestamp_next_frame();
 

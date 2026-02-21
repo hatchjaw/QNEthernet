@@ -30,6 +30,10 @@ bool EthernetIEEE1588Class::writeTimer(const timespec& t) const {
   return driver_ieee1588_write_timer(&t);
 }
 
+bool EthernetIEEE1588Class::offsetTimer(int64_t ns) const{
+  return driver_ieee1588_offset_timer(ns);
+}
+
 void EthernetIEEE1588Class::timestampNextFrame() const {
   driver_ieee1588_timestamp_next_frame();
 }
