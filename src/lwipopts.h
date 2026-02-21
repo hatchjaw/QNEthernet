@@ -133,6 +133,10 @@ void qnethernet_hal_check_core_locking(const char *file, int line,
 // #define IP_SOF_BROADCAST_RECV           0
 // #define IP_FORWARD_ALLOW_TX_ON_RX_NETIF 0
 
+#ifndef LWIP_ACD
+#define LWIP_ACD                      1
+#endif
+
 // ICMP options
 #ifndef LWIP_ICMP
 #define LWIP_ICMP           (LWIP_IPV4)  /* 1 */
@@ -230,7 +234,7 @@ void qnethernet_hal_check_core_locking(const char *file, int line,
 // #define LWIP_TCP_MAX_SACK_NUM      4
 #define TCP_MSS                    ((MTU) - 40)  /* 536 */
 // #define TCP_CALCULATE_EFF_SEND_MSS 1
-// #define LWIP_TCP_RTO_TIME          3000
+#define LWIP_TCP_RTO_TIME          3000
 #define TCP_SND_BUF                (4 * (TCP_MSS))  /* (2 * TCP_MSS) */
 // #define TCP_SND_QUEUELEN           ((4 * (TCP_SND_BUF) + (TCP_MSS - 1))/(TCP_MSS))
 /* #define TCP_SNDLOWAT \

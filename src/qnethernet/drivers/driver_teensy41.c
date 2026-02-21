@@ -39,6 +39,8 @@ void qnethernet_hal_enable_interrupts();
 //  Defines
 // --------------------------------------------------------------------------
 
+#define CLRSET(reg, clear, set) ((reg) = ((reg) & ~(clear)) | (set))
+
 #define GPIO_PAD_OUTPUT (0                         \
     /* HYS_0_Hysteresis_Disabled */                \
     /* PUS_0_100K_Ohm_Pull_Down */                 \
