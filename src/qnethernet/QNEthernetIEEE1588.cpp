@@ -67,6 +67,11 @@ bool EthernetIEEE1588Class::setChannelCompareValue(int channel,
   return driver_ieee1588_set_channel_compare_value(channel, value);
 }
 
+bool EthernetIEEE1588Class::getChannelCompareValue(int channel, uint32_t &value) const
+{
+  return driver_ieee1588_get_channel_compare_value(channel, &value);
+}
+
 bool EthernetIEEE1588Class::getAndClearChannelStatus(int channel) const {
   return driver_ieee1588_get_and_clear_channel_status(channel);
 }

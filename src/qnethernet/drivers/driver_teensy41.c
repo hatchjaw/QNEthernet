@@ -1508,6 +1508,19 @@ bool driver_ieee1588_set_channel_compare_value(const int channel,
   return true;
 }
 
+bool driver_ieee1588_get_channel_compare_value(int channel, uint32_t *value)
+{
+  if (channel < 0 || channel > 3) {
+    return false;
+  }
+  volatile uint32_t *tccr = tccrReg(channel);
+  if (tccr == NULL) {
+    return false;
+  }
+  *value = *tccr;
+  return true;
+}
+
 bool driver_ieee1588_get_and_clear_channel_status(const int channel) {
   volatile uint32_t *const tcsr = tcsrReg(channel);
   if (tcsr == NULL) {

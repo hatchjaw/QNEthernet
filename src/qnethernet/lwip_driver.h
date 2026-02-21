@@ -420,6 +420,12 @@ bool driver_ieee1588_set_channel_output_pulse_width(int channel,
 ATTRIBUTE_NODISCARD
 bool driver_ieee1588_set_channel_compare_value(int channel, uint32_t value);
 
+// Gets the channel compare value. This returns whether successful.
+//
+// This will return false for an unknown channel.
+ATTRIBUTE_NODISCARD
+bool driver_ieee1588_get_channel_compare_value(int channel, uint32_t *value);
+
 // Retrieves and then clears the status for the given channel. This will return
 // false for an unknown channel.
 ATTRIBUTE_NODISCARD
