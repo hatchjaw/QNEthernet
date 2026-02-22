@@ -1461,15 +1461,16 @@ bool driver_ieee1588_set_channel_mode(const int channel, const int mode) {
     return false;
   }
 
-  uint32_t r = *tcsr;
-  *tcsr = r & ~(ENET_TCSR_TMODE_MASK | ENET_TCSR_TF);  // Don't clear TF (w1c)
+  uint32_t state = *tcsr; // Backup current state
+  *tcsr = 0;
   while ((*tcsr & ENET_TCSR_TMODE_MASK) != 0) {
     // Check until the channel is disabled
   }
-  CLRSET(r, ENET_TCSR_TMODE_MASK | ENET_TCSR_TF,  // Don't clear TF (w1c)
-         ENET_TCSR_TMODE(mode));
-  *tcsr = r;
-  // TODO: Should we wait until change here?
+  CLRSET(state,ENET_TCSR_TMODE_MASK,ENET_TCSR_TMODE(mode));
+  *tcsr = state;
+  while (*tcsr != state) {
+    // Check until the channel is enabled
+  }
 
   return true;
 }
@@ -1485,16 +1486,16 @@ bool driver_ieee1588_set_channel_output_pulse_width(const int channel,
     return false;
   }
 
-  uint32_t r = *tcsr;
-  *tcsr = r & ~(ENET_TCSR_TMODE_MASK | ENET_TCSR_TF);  // Don't clear TF (w1c)
+  uint32_t state = *tcsr; // Backup current state
+  *tcsr  = 0;
   while ((*tcsr & ENET_TCSR_TMODE_MASK) != 0) {
     // Check until the channel is disabled
   }
-  CLRSET(r, ENET_TCSR_TPWC_MASK | ENET_TCSR_TF,  // Don't clear TF (w1c)
-         ENET_TCSR_TPWC(pulseWidth - 1));
-  *tcsr = r;
-  // TODO: Should we wait until change here?
-
+  CLRSET(state,ENET_TCSR_TPWC_MASK,ENET_TCSR_TPWC(pulseWidth - 1));
+  *tcsr = state;
+  while (*tcsr != state) {
+    // Check until the channel is enabled
+  }
   return true;
 }
 
@@ -1508,7 +1509,7 @@ bool driver_ieee1588_set_channel_compare_value(const int channel,
   return true;
 }
 
-bool driver_ieee1588_get_channel_compare_value(int channel, uint32_t *value)
+bool driver_ieee1588_get_channel_compare_value(const int channel, uint32_t *value)
 {
   if (channel < 0 || channel > 3) {
     return false;
@@ -1535,7 +1536,7 @@ bool driver_ieee1588_get_and_clear_channel_status(const int channel) {
   }
 }
 
-bool driver_ieee1588_set_channel_interrupt_enable(int channel, bool enable)
+bool driver_ieee1588_set_channel_interrupt_enable(const int channel, const bool enable)
 {
   if (channel < 0 || channel > 3) {
     return false;
